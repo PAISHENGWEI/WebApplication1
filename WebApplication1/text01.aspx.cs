@@ -19,6 +19,7 @@ namespace WebApplication1
             isRock.LineBot.Bot bot = new isRock.LineBot.Bot("LDLXosKMbT2s7IpWWISQYEfLKPq3WBdOWjxBw0qY/lFeDgi16Ji0nHh3Ss4pONI1UBdgryRdNQl4hwlZc1ZkqtF3OnIamIGyQ4Bkxchz0Oujmrh1dmjCRq5GERwGnLEySmheMC7b98Ims2yUdzblgAdB04t89/1O/w1cDnyilFU=");
             bot.PushMessage("U562246020d0f9a258369a63e090215e2", "text");
             bot.PushMessage("U562246020d0f9a258369a63e090215e2",1 , 1);
+            bot.PushMessage("U562246020d0f9a258369a63e090215e2", new Uri("https://i2.kknews.cc/SIG=4ru29q/31oq00035prn11o60rq7.jpg"));
         }
     }
 }
