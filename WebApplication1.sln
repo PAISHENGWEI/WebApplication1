@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebAppli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{78768666-B91A-47EE-89E9-3A23C1D0936B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineBot3", "LineBot3\LineBot3.csproj", "{7BCAB049-48AE-4C24-B527-BCE52B526BDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{78768666-B91A-47EE-89E9-3A23C1D0936B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78768666-B91A-47EE-89E9-3A23C1D0936B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78768666-B91A-47EE-89E9-3A23C1D0936B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BCAB049-48AE-4C24-B527-BCE52B526BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BCAB049-48AE-4C24-B527-BCE52B526BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BCAB049-48AE-4C24-B527-BCE52B526BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BCAB049-48AE-4C24-B527-BCE52B526BDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
