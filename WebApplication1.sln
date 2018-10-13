@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "WebAppli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineBot3", "LineBot3\LineBot3.csproj", "{7BCAB049-48AE-4C24-B527-BCE52B526BDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinebotPractice", "LinebotPractice\LinebotPractice.csproj", "{8388C362-D4F9-4C35-ACBF-C09B26E8CADF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7BCAB049-48AE-4C24-B527-BCE52B526BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BCAB049-48AE-4C24-B527-BCE52B526BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BCAB049-48AE-4C24-B527-BCE52B526BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8388C362-D4F9-4C35-ACBF-C09B26E8CADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8388C362-D4F9-4C35-ACBF-C09B26E8CADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8388C362-D4F9-4C35-ACBF-C09B26E8CADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8388C362-D4F9-4C35-ACBF-C09B26E8CADF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,9 +1,10 @@
 ﻿using isRock.LineBot;
+using Microsoft.ProjectOxford.Vision;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace LineBot3.Controllers
@@ -12,6 +13,7 @@ namespace LineBot3.Controllers
     {
         const string channelAccessToken = "JSCQiUyzNhGMbsOQbuNFkHrUldn43xSB0HcDbM5cNSLLxXb4VzOIidgGHaEymJhfUBdgryRdNQl4hwlZc1ZkqtF3OnIamIGyQ4Bkxchz0Ou3Vgn3yguSHLj88EEYK0TUheSV0kRPsA+1ZtvbMutauAdB04t89/1O/w1cDnyilFU=";
         const string AdminUserId = "U562246020d0f9a258369a63e090215e2";
+        const string VisionAPIKey = "9750f3bee74b4bcb80c1f592a2ae5821";
 
         [Route("api/Linebot")]
         [HttpPost]
@@ -47,10 +49,9 @@ namespace LineBot3.Controllers
                     {
                         if (LineEvent.message.text == "Hello")
                             this.ReplyMessage(LineEvent.replyToken, UserInfo.displayName + "您好，今天適合穿短袖上衣");
-
                     }
 
-                    if (LineEvent.message.text == "你餓了嗎")
+                    if (LineEvent.message.text == "餓了嗎")
                     {
                         var bott = new Bot(channelAccessToken);
                         //建立actions,作為ButtonTemplate的用戶回復行為
@@ -60,7 +61,6 @@ namespace LineBot3.Controllers
 
                         var ConfirmTemplate = new isRock.LineBot.ConfirmTemplate()
                         {
-
                             text = "請選擇其中之一",
                             altText = "請在手機上檢視",
 
@@ -74,9 +74,9 @@ namespace LineBot3.Controllers
                         //建立actions,作為ButtonTemplate的用戶回復行為
                         var actions = new List<isRock.LineBot.TemplateActionBase>();
                         actions.Add(new isRock.LineBot.MessageAction() { label = "標題-文字回復", text = "回復文字" });
-                        actions.Add(new isRock.LineBot.UriAction() { label = "標題-開啟URL", uri = new Uri("http://www.google.com") });
+                        actions.Add(new isRock.LineBot.UriAction() { label = "選擇餐廳", uri = new Uri("https://tgifridays.com.tw/locations") });
                        // actions.Add(new isRock.LineBot.PostbackAction() { label = "標題-發生postback", data = "abc=aaa&def=111" });
-                        actions.Add(new isRock.LineBot.DateTimePickerAction() { label = "請選擇時間", mode = "dat" });
+                        actions.Add(new isRock.LineBot.DateTimePickerAction() { label = "請選擇時間", mode = "date" });
                         var ButtonTemplateMsg = new isRock.LineBot.ButtonsTemplate()
                         {
                             title = "選項",
@@ -95,13 +95,59 @@ namespace LineBot3.Controllers
                         var guid = Guid.NewGuid().ToString();
                         var filename = $"{guid}.png";
                         var path = System.Web.Hosting.HostingEnvironment.MapPath("~/Temps/");
+
                         System.IO.File.WriteAllBytes(path + filename, bytes);
+
                         //取得base URL
                         var baseUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
                         //組出外部可以讀取的檔名
                         var url = $"{baseUrl}/Temps/{filename}";
-                        this.ReplyMessage(LineEvent.replyToken, $"你的圖片位於\n{url}");
+                        // this.ReplyMessage(LineEvent.replyToken, $"你的圖片位於\n{url}");
+                        var fs1 = new FileStream(path + filename, FileMode.Open);
+                        System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(fs1);
+                        Graphics g = Graphics.FromImage(bmp);
+                        fs1.Close();
+
+                        var visionClient = new Microsoft.ProjectOxford.Vision.VisionServiceClient(VisionAPIKey, 
+                            "https://southeastasia.api.cognitive.microsoft.com/vision/v1.0");
+
+                        //分析圖片(從FileUpload1.PostedFile.InputStream取得影像)
+                        //分析 Faces & Description 
+
+                        var Results = visionClient.AnalyzeImageAsync(url,
+                            new VisualFeature[] { VisualFeature.Faces, VisualFeature.Description }).Result;
+                        
+                        int isM = 0, isF = 0;
+                        foreach (var Face in Results.Faces)
+                        {
+                            //取得人臉位置
+                            var faceRect = Face.FaceRectangle;
+                            //繪製人臉紅框 
+                            g.DrawRectangle(
+                                        new Pen(Brushes.Red, 10),
+                                        new Rectangle(faceRect.Left, faceRect.Top,
+                                            faceRect.Width, faceRect.Height));
+
+                            Font drawFont = new Font("Arial", 40);
+                            SolidBrush drawBrush = new SolidBrush(Color.Red);
+                            String drawString = Face.Age.ToString();
+
+                            g.DrawString(drawString + "歲", drawFont, drawBrush, new Point(faceRect.Left - 30, faceRect.Top - 50));
+
+                            //計算幾男幾女
+                            if (Face.Gender.StartsWith("M"))
+                                isM += 1;
+                            else
+                                isF += 1;
+                        }
+                        var path1 = System.Web.Hosting.HostingEnvironment.MapPath("~/Temps/");
+                        var newfilename = Guid.NewGuid().ToString() + ".png";
+                        bmp.Save(path1 + newfilename);
+
+                        this.ReplyMessage(LineEvent.replyToken,new Uri($"{baseUrl}/Temps/{newfilename}"));
+
                     }
+
                 }
 
                     return Ok();
